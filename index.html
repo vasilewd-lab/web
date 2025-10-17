@@ -45,9 +45,19 @@ header, footer {
 
 .sidebar {
   width: 280px;
-  background: #fff;
+  //background: #fff;
+  
+  background-color: #f8f8f8;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0,0,0,0.02),
+    rgba(0,0,0,0.02) 1px,
+    transparent 1px,
+    transparent 20px
+  );
+  
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
   padding: 15px;
   display: flex;
   flex-direction: column;
@@ -55,14 +65,35 @@ header, footer {
   overflow-y: auto; /* scroll intern doar dacă e nevoie */
 }
 
+
+
 .content-area {
+
   flex: 1;
-  background: #fff;
+  //background: #fff;
+  //border-radius: 10px;
+
+    
+background-color: #f8f8f8;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0,0,0,0.02),
+    rgba(0,0,0,0.02) 1px,
+    transparent 1px,
+    transparent 20px
+  );	
+	
+	
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
   padding: 25px;
   overflow-y: auto; /* scroll doar în content-area */
+  
 }
+
+
+
+
 
     .profile-img {
       width: 100px;
@@ -71,6 +102,35 @@ header, footer {
       object-fit: cover;
       margin-bottom: 10px;
     }
+	
+	.welcome-wrapper {
+  display: flex;
+  justify-content: center; /* centru orizontal */
+  align-items: center;     /* centru vertical */
+  height: 90%;            /* ocupă tot spațiul content-area */
+  width: 100%;
+}
+
+.welcome-img {
+ 
+  max-width: 85vw;   /* nu depășește 90% din lățimea ecranului */
+  max-height: 80vh;  /* nu depășește 80% din înălțimea ecranului */
+  height: auto;
+  border-radius: 10px;
+}
+
+
+
+header a {
+  color: #fff;         /* text alb */
+  text-decoration: none; /* fără subliniere */
+}
+
+ 
+header a:hover {
+  text-decoration: underline; /* apare subliniere când treci cu mouse-ul */
+  color: #f8f8f8;             /* sau o nuanță mai deschisă de alb */
+}
 
     .menu-btn {
       width: 100%;
@@ -87,7 +147,7 @@ header, footer {
   </style>
 </head>
 <body>
-  <header><h3>De luni încep să...</h3></header>
+  <header><h3><a href=""> De luni încep să...</a></h3></header>
 
   <div class="main-content">
     <!-- Sidebar -->
@@ -110,7 +170,9 @@ header, footer {
     <div class="content-area" id="contentArea">
       <h4>Bine ai venit!</h4>
       <p>Selectează o opțiune din meniu pentru a începe.</p>
-	  <img src="https://via.placeholder.com/300x200.png?text=Imagine+Welcome" alt="Welcome" class="welcome-img">
+	    <div class="welcome-wrapper">
+        <img src="img/3.png" alt="Welcome" class="welcome-img">
+        </div>
 
     </div>
   </div>
