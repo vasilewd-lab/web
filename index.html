@@ -510,7 +510,7 @@ header a:hover {
             </div>`;
           break;
       }
-
+      content.scrollTop = 0;
       content.innerHTML = html;
       closeSidebarOnMobile();
 
@@ -540,6 +540,16 @@ header a:hover {
     document.getElementById('btnCantar').addEventListener('click', () => showForm('cantar'));
     document.getElementById('btnMasa').addEventListener('click', () => showForm('masa'));
     document.getElementById('btnGrafic').addEventListener('click', () => showForm('grafic'));
+	
+	document.addEventListener('click', function(event) {
+  const isClickInside = sidebar.contains(event.target);
+  const isToggleButton = menuToggle.contains(event.target);
+  const isMobile = window.innerWidth <= 768;
+
+  if (!isClickInside && !isToggleButton && isMobile && sidebar.classList.contains('show')) {
+    sidebar.classList.remove('show');
+  }
+});
   </script>
 </body>
 </html>
