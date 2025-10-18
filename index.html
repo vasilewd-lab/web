@@ -17,7 +17,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* dezactivează scroll-ul general */
+  overflow: hidden;
 }
 
 body {
@@ -32,21 +32,42 @@ header, footer {
   padding: 14px 10px;
   border-radius: 8px;
   margin: 10px 20px;
-  flex-shrink: 0; /* să nu se micșoreze */
+  flex-shrink: 0;
+  position: relative;
+}
+
+header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+header a:hover {
+  text-decoration: underline;
+  color: #f8f8f8;
+}
+
+/* Buton meniu mobil */
+.menu-toggle {
+  display: none;
+  position: absolute;
+  left: 10px;
+  top: 12px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 28px;
 }
 
 .main-content {
-  flex: 1; 
+  flex: 1;
   display: flex;
-  gap: 20px; 
-  padding: 10px 20px; /* spațiu între marginea ferestrei și div-uri */
-  overflow: hidden; 
+  gap: 20px;
+  padding: 10px 20px;
+  overflow: hidden;
 }
 
 .sidebar {
   width: 280px;
-  //background: #fff;
-  
   background-color: #f8f8f8;
   background-image: repeating-linear-gradient(
     45deg,
@@ -55,109 +76,124 @@ header, footer {
     transparent 1px,
     transparent 20px
   );
-  
   border-radius: 10px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.25);
   padding: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-y: auto; /* scroll intern doar dacă e nevoie */
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
+.sidebar.show {
+  transform: translateX(0);
+}
 
+.profile-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
 
 .content-area {
-
   flex: 1;
-  //background: #fff;
-  //border-radius: 10px;
-
-    
-background-color: #f8f8f8;
+  background-color: #f8f8f8;
   background-image: repeating-linear-gradient(
     45deg,
     rgba(0,0,0,0.02),
     rgba(0,0,0,0.02) 1px,
     transparent 1px,
     transparent 20px
-  );	
-	
-	
+  );
   box-shadow: 0 4px 20px rgba(0,0,0,0.25);
   border-radius: 10px;
   padding: 25px;
-  overflow-y: auto; /* scroll doar în content-area */
-  
+  overflow-y: auto;
 }
 
-
-
-
-
-    .profile-img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 10px;
-    }
-	
-	.welcome-wrapper {
+.welcome-wrapper {
   display: flex;
-  justify-content: center; /* centru orizontal */
-  align-items: center;     /* centru vertical */
-  height: 90%;            /* ocupă tot spațiul content-area */
+  justify-content: center;
+  align-items: center;
+  height: 90%;
   width: 100%;
 }
 
 .welcome-img {
- 
-  max-width: 85vw;   /* nu depășește 90% din lățimea ecranului */
-  max-height: 80vh;  /* nu depășește 80% din înălțimea ecranului */
+  max-width: 85vw;
+  max-height: 80vh;
   height: auto;
   border-radius: 10px;
 }
 
-
-
-header a {
-  color: #fff;         /* text alb */
-  text-decoration: none; /* fără subliniere */
+.menu-btn {
+  width: 100%;
+  height: 75px;
+  margin-bottom: 8px;
+  text-align: left;
 }
 
- 
-header a:hover {
-  text-decoration: underline; /* apare subliniere când treci cu mouse-ul */
-  color: #f8f8f8;             /* sau o nuanță mai deschisă de alb */
+.hidden { display: none; }
+
+.arrow-up { color: green; }
+.arrow-down { color: red; }
+.arrow-right { color: gray; }
+
+/* -------- Responsivitate -------- */
+@media (max-width: 768px) {
+  html, body {
+    overflow: auto;
+  }
+
+  .main-content {
+    flex-direction: column;
+    padding: 0 10px;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transform: translateX(-100%);
+    border-radius: 0;
+    width: 260px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  }
+
+  .content-area {
+    margin-top: 10px;
+    height: auto;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  header h3 {
+    font-size: 1.2rem;
+    margin: 0;
+  }
 }
-
-    .menu-btn {
-      width: 100%;
-	  height:75px;
-      margin-bottom: 8px;
-      text-align: left;
-    }
-
-    .hidden { display: none; }
-
-    .arrow-up { color: green; }
-    .arrow-down { color: red; }
-    .arrow-right { color: gray; }
   </style>
 </head>
 <body>
-  <header><h3><a href=""> De luni încep să...</a></h3></header>
+  <header>
+    <button class="menu-toggle" id="menuToggle"><i class="bi bi-list"></i></button>
+    <h3><a href="#">De luni încep să...</a></h3>
+  </header>
 
   <div class="main-content">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!--<img src="https://via.placeholder.com/100" alt="user" class="profile-img">-->
-	  <img src="img\user.png" alt="user" class="profile-img">
+    <div class="sidebar" id="sidebar">
+      <img src="img/user.png" alt="user" class="profile-img">
       <h5>Ion Popescu</h5>
       <p><small>Data înregistrării: 12.05.2024</small></p>
-	  <p><small>Program: <span style="color: brown;">Premium</span></small></p>
-	  <p><small>Statut: <span style="color: green;">Activ</span></small></p>
+      <p><small>Program: <span style="color: brown;">Premium</span></small></p>
+      <p><small>Statut: <span style="color: green;">Activ</span></small></p>
       <hr>
       <button class="btn btn-primary menu-btn" id="btnDate"><i class="bi bi-person-circle me-2"></i>Date personale</button>
       <button class="btn btn-success menu-btn" id="btnMasurare"><i class="bi bi-rulers me-2"></i>Adaugă măsurare corporală</button>
@@ -166,23 +202,35 @@ header a:hover {
       <button class="btn btn-dark menu-btn" id="btnGrafic"><i class="bi bi-graph-up-arrow me-2"></i>Grafic progres</button>
     </div>
 
-    <!-- Content area -->
     <div class="content-area" id="contentArea">
       <h4>Bine ai venit!</h4>
       <p>Selectează o opțiune din meniu pentru a începe.</p>
-	    <div class="welcome-wrapper">
+      <div class="welcome-wrapper">
         <img src="img/3.png" alt="Welcome" class="welcome-img">
-        </div>
-
+      </div>
     </div>
   </div>
 
   <footer>
-    <p><i class="bi bi-whatsapp me-2"></i>Pentru orice întrebări mă găsești aici: <strong>068558558</strong></p>
+    <p><i class="bi bi-whatsapp me-2"></i>Pentru întrebări: <strong>068558558</strong></p>
   </footer>
 
   <script>
     let globalChart = null;
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+
+    // Deschide/închide meniul pe mobil
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('show');
+    });
+
+    // Închide meniul automat după selectarea unei opțiuni (mobil)
+    function closeSidebarOnMobile() {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove('show');
+      }
+    }
 
     function trendArrow(current, previous) {
       if (previous === null || previous === undefined) return '<i class="bi bi-dash-lg arrow-right"></i>';
@@ -201,9 +249,9 @@ header a:hover {
       let html = '';
 
       switch(type) {
-	    case 'date':
-  html = `
-    <h4><i class="bi bi-person-circle me-2"></i>Date personale</h4>
+        case 'date':
+          html = `
+            <h4><i class="bi bi-person-circle me-2"></i>Date personale</h4>
     <form>
       <!-- 1. Date de identificare și demografice -->
       <div class="mb-3"><label>Nume și prenume</label><input class="form-control" placeholder="Popescu Ion"></div>
@@ -308,12 +356,8 @@ header a:hover {
       <div class="mb-3"><label>Email</label><input type="email" class="form-control" placeholder="nume@email.com"></div>
 
       <button class="btn btn-primary"><i class="bi bi-save me-2"></i>Salvează</button>
-    </form>
-  `;
-  break;
-
-		<!-- 		
-        --> 
+    </form>`;
+          break;
 
         case 'masurare':
           html = `
@@ -413,7 +457,7 @@ header a:hover {
 		
             </div>`;
           break;
--->
+
         case 'cantar':
           html = `
             <h4><i class="bi bi-activity me-2"></i>Înregistrează greutatea</h4>
@@ -468,8 +512,8 @@ header a:hover {
       }
 
       content.innerHTML = html;
+      closeSidebarOnMobile();
 
-      // Desenează graficul o singură dată
       if (type === 'grafic') {
         if (globalChart) globalChart.destroy();
         const ctx = document.getElementById('grafSlabire').getContext('2d');
@@ -486,16 +530,11 @@ header a:hover {
               tension: 0.3
             }]
           },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: true } }
-          }
+          options: { responsive: true, maintainAspectRatio: false }
         });
       }
     }
 
-    // Butoane meniu
     document.getElementById('btnDate').addEventListener('click', () => showForm('date'));
     document.getElementById('btnMasurare').addEventListener('click', () => showForm('masurare'));
     document.getElementById('btnCantar').addEventListener('click', () => showForm('cantar'));
