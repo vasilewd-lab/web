@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>De luni încep să...</title>
+
+  <!-- Bootstrap & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+header, footer {
+  background: #343a40;
+  color: #fff;
+  text-align: center;
+  padding: 14px 10px;
+  border-radius: 8px;
+  margin: 10px 20px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+header a:hover {
+  text-decoration: underline;
+  color: #f8f8f8;
+}
+
+/* Buton meniu mobil */
+.menu-toggle {
+  display: none;
+  position: absolute;
+  left: 10px;
+  top: 12px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 28px;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  padding: 10px 20px;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 280px;
+  background-color: #f8f8f8;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0,0,0,0.02),
+    rgba(0,0,0,0.02) 1px,
+    transparent 1px,
+    transparent 20px
+  );
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.sidebar.show {
+  transform: translateX(0);
+}
+
+.profile-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.content-area {
+  flex: 1;
+  background-color: #f8f8f8;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0,0,0,0.02),
+    rgba(0,0,0,0.02) 1px,
+    transparent 1px,
+    transparent 20px
+  );
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  border-radius: 10px;
+  padding: 25px;
+  overflow-y: auto;
+}
+
+.welcome-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+  width: 100%;
+}
+
+.welcome-img {
+  max-width: 85vw;
+  max-height: 80vh;
+  height: auto;
+  border-radius: 10px;
+}
+
+.menu-btn {
+  width: 100%;
+  height: 75px;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.hidden { display: none; }
+
+.arrow-up { color: green; }
+.arrow-down { color: red; }
+.arrow-right { color: gray; }
+
+/* -------- Responsivitate -------- */
+@media (max-width: 768px) {
+  html, body {
+    overflow: auto;
+  }
+
+  .main-content {
+    flex-direction: column;
+    padding: 0 10px;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transform: translateX(-100%);
+    border-radius: 0;
+    width: 260px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  }
+
+  .content-area {
+    margin-top: 10px;
+    height: auto;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  header h3 {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+}
+  </style>
+</head>
+<body>
+  <header>
+    <button class="menu-toggle" id="menuToggle"><i class="bi bi-list"></i></button>
+    <h3><a href="#">De luni încep să...</a></h3>
+  </header>
+
+  <div class="main-content">
+    <div class="sidebar" id="sidebar">
+      <img src="img/user.png" alt="user" class="profile-img">
+      <h5>Ion Popescu</h5>
+      <p><small>Data înregistrării: 12.05.2024</small></p>
+      <p><small>Program: <span style="color: brown;">Premium</span></small></p>
+      <p><small>Statut: <span style="color: green;">Activ</span></small></p>
+      <hr>
+      <button class="btn btn-primary menu-btn" id="btnDate"><i class="bi bi-person-circle me-2"></i>Date personale</button>
+      <button class="btn btn-success menu-btn" id="btnMasurare"><i class="bi bi-rulers me-2"></i>Adaugă măsurare corporală</button>
+      <button class="btn btn-warning menu-btn" id="btnCantar"><i class="bi bi-activity me-2"></i>Înregistrează greutatea</button>
+      <button class="btn btn-info menu-btn" id="btnMasa"><i class="bi bi-egg-fried me-2"></i>Adaugă masă</button>
+      <button class="btn btn-dark menu-btn" id="btnGrafic"><i class="bi bi-graph-up-arrow me-2"></i>Grafic progres</button>
+    </div>
+
+    <div class="content-area" id="contentArea">
+      <h4>Bine ai venit!</h4>
+      <p>Selectează o opțiune din meniu pentru a începe.</p>
+      <div class="welcome-wrapper">
+        <img src="img/3.png" alt="Welcome" class="welcome-img">
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p><i class="bi bi-whatsapp me-2"></i>Pentru întrebări: <strong>068558558</strong></p>
+  </footer>
+
+  <script>
+    let globalChart = null;
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+
+    // Deschide/închide meniul pe mobil
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('show');
+    });
+
+    // Închide meniul automat după selectarea unei opțiuni (mobil)
+    function closeSidebarOnMobile() {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove('show');
+      }
+    }
+
+    function trendArrow(current, previous) {
+      if (previous === null || previous === undefined) return '<i class="bi bi-dash-lg arrow-right"></i>';
+      if (current > previous) return '<i class="bi bi-arrow-up-short arrow-up"></i>';
+      if (current < previous) return '<i class="bi bi-arrow-down-short arrow-down"></i>';
+      return '<i class="bi bi-dash-lg arrow-right"></i>';
+    }
+
+    function toggleTable(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function showForm(type) {
+      const content = document.getElementById('contentArea');
+      let html = '';
+
+      switch(type) {
+        case 'date':
+          html = `
+            <h4><i class="bi bi-person-circle me-2"></i>Date personale</h4>
+    <form>
+      <!-- 1. Date de identificare și demografice -->
+      <div class="mb-3"><label>Nume și prenume</label><input class="form-control" placeholder="Popescu Ion"></div>
+      <div class="mb-3"><label>Data nașterii</label><input type="date" class="form-control"></div>
+      <div class="mb-3"><label>Gen</label>
+        <select class="form-select">
+          <option>Masculin</option>
+          <option>Femenin</option>
+        </select>
+      </div>
+      <div class="mb-3"><label>Înălțime (cm)</label><input type="number" class="form-control" placeholder="175"></div>
+      <div class="mb-3"><label>Greutate actuală (kg)</label><input type="number" class="form-control" placeholder="81"></div>
+      <div class="mb-3"><label>Greutate dorită/țintă (kg)</label><input type="number" class="form-control" placeholder="70"></div>
+      
+      <hr>
+
+      <!-- 2. Date despre stilul de viață -->
+      <h5 class="bi bi-heart-pulse"> Stil de viață</h5>
+      <div class="mb-3"><label>Nivel de activitate fizică</label>
+        <select class="form-select">
+          <option>Sedentar</option>
+          <option>Moderat</option>
+          <option>Intens</option>
+        </select>
+      </div>
+      <div class="mb-3"><label>Program zilnic (ore muncă, somn, mese)</label><input type="text" class="form-control"></div>
+      <div class="mb-3"><label>Tipul de muncă</label>
+        <select class="form-select">
+          <option>Birou</option>
+          <option>Teren</option>
+          <option>Fizic</option>
+        </select>
+      </div>
+      <div class="mb-3"><label>Fumat / consum alcool</label><input type="text" class="form-control"></div>
+      <div class="mb-3"><label>Nivel de stres</label>
+        <select class="form-select">
+          <option>Scăzut</option>
+          <option>Moderate</option>
+          <option>Ridicat</option>
+        </select>
+      </div>
+
+      <hr>
+
+      <!-- 3. Istoric medical și starea de sănătate -->
+      <h5 class="bi bi-file-medical"> Istoric medical</h5>
+      <div class="mb-3"><label>Afecțiuni medicale existente</label><input type="text" class="form-control"></div>
+      <div class="mb-3"><label>Alergii alimentare</label><input type="text" class="form-control"></div>
+      <div class="mb-3"><label>Intoleranțe (lactoză, gluten etc.)</label><input type="text" class="form-control"></div>
+      <div class="mb-3"><label>Tratament medicamentos actual</label><input type="text" class="form-control"></div>
+      <div class="mb-3"><label>Analize recente</label><input type="text" class="form-control" placeholder="Colesterol, glicemie, TSH etc."></div>
+
+      <hr>
+
+      <!-- 4. Date despre alimentație și preferințe -->
+      <h5 class="bi bi-egg-fried"> Alimentație și preferințe</h5>
+      <div class="mb-3"><label>Obiceiuri alimentare actuale</label><input type="text" class="form-control" placeholder="Mese/zi, gustări, orar, stil gătit"></div>
+      <div class="mb-3"><label>Alimente nepreferate</label><input type="text" class="form-control"></div>
+      <!--<div class="mb-3"><label>Diete speciale</label>
+        <select class="form-select">
+          <option>Normal</option>
+          <option>Vegetarian</option>
+          <option>Vegan</option>
+          <option>Keto</option>
+        </select>
+      </div> -->
+      <div class="mb-3"><label>Apetit / senzația de foame</label>
+        <select class="form-select">
+          <option>Scăzut</option>
+          <option>Normal</option>
+          <option>Ridicat</option>
+        </select>
+      </div>
+
+      <hr>
+
+      <!-- 5. Obiective și monitorizare -->
+      <h5 class="bi bi-bar-chart-line"> Obiective și monitorizare</h5>
+      <div class="mb-3"><label>Obiectiv principal</label><input type="text" class="form-control" placeholder="Slăbire, tonifiere, energie etc."></div>
+            <div class="mb-3"><label>Motivația principală</label><input type="text" class="form-control" placeholder="Sănătate, aspect, performanță"></div>
+      <div class="mb-3"><label>Frecvența monitorizării</label>
+        <select class="form-select">
+          <option>Zilnic</option>
+          <option>Săptămânal</option>
+        </select>
+      </div>
+
+      <hr>
+
+      <!-- 6. Date suplimentare (opțional) 
+      <h5 > Opțional</h5>
+      <div class="mb-3"><label>Circumferințe corporale</label><input type="text" class="form-control" placeholder="Talie, șolduri, coapse, braț"></div>
+      <div class="mb-3"><label>Poze de progres</label><input type="file" class="form-control" accept="image/*"></div>
+      <div class="mb-3"><label>Masa corporală </label><input type="number" class="form-control" placeholder="Se poate calcula automat"></div>
+      <div class="mb-3"><label>Procent estimat de grăsime corporală</label><input type="number" class="form-control" placeholder="%"></div>
+
+      <hr>-->
+
+      <!-- Contact și salvare -->
+	  <h5 class="bi bi-telephone"> Date de contact</h5>
+      <div class="mb-3"><label>Telefon</label><input type="phone" class="form-control" placeholder="069692251"></div>
+      <div class="mb-3"><label>Email</label><input type="email" class="form-control" placeholder="nume@email.com"></div>
+
+      <button class="btn btn-primary"><i class="bi bi-save me-2"></i>Salvează</button>
+    </form>`;
+          break;
+
+        case 'masurare':
+          html = `
+            <h4><i class="bi bi-rulers me-2"></i>Adaugă o înregistrare referitor la circumferințe corporale</h4>
+            <form>
+			
+
+<div class="mb-3">
+  <label>Greutate (kg)</label>
+  <input type="number" class="form-control" placeholder="Greutate">
+</div>
+
+<div class="mb-3">
+  <label>Braț (cm)</label>
+  <input type="number" class="form-control" placeholder="Circumferința brațului">
+</div>
+
+<div class="mb-3">
+  <label>Talie (cm)</label>
+  <input type="number" class="form-control" placeholder="Circumferința taliei">
+</div>
+
+<div class="mb-3">
+  <label>Coapsă (cm)</label>
+  <input type="number" class="form-control" placeholder="Circumferința coapsei">
+</div>
+
+<div class="mb-3">
+  <label>Piept (cm)</label>
+  <input type="number" class="form-control" placeholder="Circumferința pieptului">
+</div>
+
+<div class="mb-3">
+  <label>Șold (cm)</label>
+  <input type="number" class="form-control" placeholder="Circumferința șoldului">
+</div>
+
+<div class="mb-3">
+  <label>Gambă (cm)</label>
+  <input type="number" class="form-control" placeholder="Circumferința gambei">
+</div>
+
+<div class="mb-3"><label>Poze de progres</label><input type="file" class="form-control" accept="image/*"></div>
+
+<div class="mb-3">
+  <label>Data</label>
+  <input type="date" class="form-control">
+</div>
+
+<button class="btn btn-success"><i class="bi bi-check-circle me-2"></i>Salvează</button>
+              <button type="button" class="btn btn-outline-secondary ms-2" onclick="toggleTable('tabelaMasurari')"><i class="bi bi-table me-2"></i>Istoric</button>
+            </form>
+            <div id="tabelaMasurari" class="hidden mt-4">
+              
+			 <table class="table table-striped table-bordered">
+  <thead class="table-success">
+    <tr>
+      <th>#</th>
+      <th>Data</th>
+      <th>Greutate (kg)</th>
+      <th>Braț (cm)</th>
+      <th>Talie (cm)</th>
+      <th>Coapsă (cm)</th>
+      <th>Piept (cm)</th>
+      <th>Șold (cm)</th>
+      <th>Gambă (cm)</th>
+      <th>Trend</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>12.10.2025</td>
+      <td>75</td>
+      <td>32</td>
+      <td>80</td>
+      <td>55</td>
+      <td>95</td>
+      <td>90</td>
+      <td>37</td>
+      <td>${trendArrow(75,null)}</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>13.10.2025</td>
+      <td>74.8</td>
+      <td>32.1</td>
+      <td>79.5</td>
+      <td>54.8</td>
+      <td>94.8</td>
+      <td>89.8</td>
+      <td>36.9</td>
+      <td>${trendArrow(74.8,75)}</td>
+    </tr>
+  </tbody>
+</table> 			  
+		
+            </div>`;
+          break;
+
+        case 'cantar':
+          html = `
+            <h4><i class="bi bi-activity me-2"></i>Înregistrează greutatea</h4>
+            <form>
+              <div class="mb-3"><label>Greutate (kg)</label><input type="number" class="form-control"></div>
+              <div class="mb-3"><label>Data</label><input type="date" class="form-control"></div>
+              <button class="btn btn-warning"><i class="bi bi-plus-circle me-2"></i>Adaugă</button>
+              <button type="button" class="btn btn-outline-secondary ms-2" onclick="toggleTable('tabelaGreutate')"><i class="bi bi-table me-2"></i>Istoric</button>
+            </form>
+            <div id="tabelaGreutate" class="hidden mt-4">
+              <table class="table table-striped table-bordered">
+                <thead class="table-warning"><tr><th>#</th><th>Data</th><th>Greutate</th><th>Trend</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>12.10.2025</td><td>75</td><td>${trendArrow(75,null)}</td></tr>
+                  <tr><td>2</td><td>13.10.2025</td><td>74.8</td><td>${trendArrow(74.8,75)}</td></tr>
+                </tbody>
+              </table>
+            </div>`;
+          break;
+
+        case 'masa':
+          html = `
+            <h4><i class="bi bi-egg-fried me-2"></i>Adaugă o masă</h4>
+            <form>
+              <div class="mb-3"><label>Tip masă</label>
+                <select class="form-select">
+                  <option>Mic dejun</option><option>Prânz</option><option>Cină</option>
+                </select></div>
+              <div class="mb-3"><label>Descriere</label><textarea class="form-control"></textarea></div>
+              <div class="mb-3"><label>Poză farfurie</label><input type="file" class="form-control" accept="image/*"></div>
+              <button class="btn btn-info"><i class="bi bi-save me-2"></i>Salvează</button>
+              <button type="button" class="btn btn-outline-secondary ms-2" onclick="toggleTable('tabelaMese')"><i class="bi bi-table me-2"></i>Istoric</button>
+            </form>
+            <div id="tabelaMese" class="hidden mt-4">
+              <table class="table table-striped table-bordered">
+                <thead class="table-info"><tr><th>#</th><th>Data</th><th>Tip</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>12.10.2025</td><td>Prânz</td></tr>
+                  <tr><td>2</td><td>13.10.2025</td><td>Cină</td></tr>
+                </tbody>
+              </table>
+            </div>`;
+          break;
+
+        case 'grafic':
+          html = `
+            <h4><i class="bi bi-graph-up-arrow me-2"></i>Grafic progres</h4>
+            <div style="height:400px">
+              <canvas id="grafSlabire"></canvas>
+            </div>`;
+          break;
+      }
+
+      content.innerHTML = html;
+      closeSidebarOnMobile();
+
+      if (type === 'grafic') {
+        if (globalChart) globalChart.destroy();
+        const ctx = document.getElementById('grafSlabire').getContext('2d');
+        globalChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['12 Oct', '13 Oct', '14 Oct', '15 Oct', '16 Oct', '17 Oct'],
+            datasets: [{
+              label: 'Greutate (kg)',
+              data: [75, 74.8, 74.6, 74.4, 74.2, 73.9],
+              borderColor: '#198754',
+              backgroundColor: 'rgba(25,135,84,0.1)',
+              fill: true,
+              tension: 0.3
+            }]
+          },
+          options: { responsive: true, maintainAspectRatio: false }
+        });
+      }
+    }
+
+    document.getElementById('btnDate').addEventListener('click', () => showForm('date'));
+    document.getElementById('btnMasurare').addEventListener('click', () => showForm('masurare'));
+    document.getElementById('btnCantar').addEventListener('click', () => showForm('cantar'));
+    document.getElementById('btnMasa').addEventListener('click', () => showForm('masa'));
+    document.getElementById('btnGrafic').addEventListener('click', () => showForm('grafic'));
+  </script>
+</body>
+</html>
