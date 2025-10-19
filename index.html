@@ -196,6 +196,25 @@ header a:hover {
   box-shadow: 0 0 8px rgba(0,0,0,0.05);
   max-width: 400px;
 }
+
+	  .notification-card {
+  background: #f8f9fa;
+  border-left: 4px solid #ffc107;
+  padding: 10px 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+}
+
+.notification-date {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.notification-message {
+  color: #555;
+}
+	  
   </style>
 </head>
 <body>
@@ -271,11 +290,43 @@ header a:hover {
       let html = '';
 
       switch(type) {
-		  case 'Mesaje':
-			  {
-				  html=``;
-				  break;
-			  }
+		   case 'mesaje':
+			{
+			  html = `
+				<h4><i class="bi bi-chat-left-dots me-2"></i>Mesaje</h4>
+				<form>
+				  <div class="notifications-wrapper">
+					<!-- Notificare generată din baza de date -->
+					<div class="notification-card mb-3">
+					  <div class="notification-date">18.10.2025</div>
+					  <div class="notification-message">Bună!, Pe 19 octombrie 2025 ne vom întâlni online, pe Zoom, pentru a discuta împreună despre dificultățile și provocările apărute pe parcurs.</div>
+					</div>
+	
+					<div class="notification-card mb-3">
+					  <div class="notification-date">18.10.2025</div>
+					  <div class="notification-message">
+						Bună!, Dorim să vă reamintim că astăzi este ziua scadentă pentru achitarea serviciilor de consultanță.
+					  </div>
+					</div>
+					
+					<div class="notification-card mb-3">
+					  <div class="notification-date">19.09.2025</div>
+					  <div class="notification-message">
+						Bună!, Vă felicităm cu prima lună petrecută alături de familia celor cu caracter. Suntem bucuroși că faceți parte din noi!
+					  </div>
+					</div>
+					
+					<div class="notification-card mb-3">
+					  <div class="notification-date">19.08.2025</div>
+					  <div class="notification-message">
+						Bună!, Mulțumim că te-ai alăturat celor cu caracter — celor care aleg echilibrul, sănătatea și puterea de a avea grijă de sine.!
+					  </div>
+					</div>
+					
+				  </div> 
+				</form>`;
+			  break;
+			}
 
 			  
         case 'date':
@@ -572,7 +623,7 @@ document.getElementById('refreshLink').addEventListener('click', function(e) {
 });
 
 
-
+    document.getElementById('btnMesaje').addEventListener('click', () => showForm('mesaje'));
     document.getElementById('btnDate').addEventListener('click', () => showForm('date'));
     document.getElementById('btnMasurare').addEventListener('click', () => showForm('masurare'));
     document.getElementById('btnCantar').addEventListener('click', () => showForm('cantar'));
@@ -591,6 +642,7 @@ document.getElementById('refreshLink').addEventListener('click', function(e) {
   </script>
 </body>
 </html>
+
 
 
 
