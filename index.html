@@ -181,6 +181,18 @@ header a:hover {
     margin: 0;
   }
 }
+
+.motto-card {
+  background: #f8f9fa;
+  border-left: 4px solid #ffc107;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-style: italic;
+  font-size: 1rem;
+  color: #555;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+  max-width: 400px;
+}
   </style>
 </head>
 <body>
@@ -207,7 +219,11 @@ header a:hover {
 
     <div class="content-area" id="contentArea">
       <h4>Bine ai venit!</h4>
-      <h3>Fiecare zi e un nou început spre cea mai bună versiune a ta</h3>
+		<div class="motto-card">
+      <i class="bi bi-sunrise-fill me-2 text-warning"></i>
+      <em>Fiecare zi e un nou început spre cea mai bună versiune a ta.</em>
+    </div>
+      <h3>Selectează o opțiune din meniu pentru a începe.</h3>
       <div class="welcome-wrapper">
         <img src="img/3.png" alt="Welcome" class="welcome-img">
       </div>
@@ -565,6 +581,7 @@ document.getElementById('refreshLink').addEventListener('click', function(e) {
   </script>
 </body>
 </html>
+
 
 
 
