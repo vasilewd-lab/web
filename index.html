@@ -221,9 +221,9 @@ header a:hover {
       <h4>Bine ai venit!</h4>
 		<div class="motto-card">
       <i class="bi bi-sunrise-fill me-2 text-warning"></i>
-      <em>Fiecare zi e un nou început spre cea mai bună versiune a ta.</em>
+      <em>Fiecare zi e un nou început spre cea mai bună versiune a ta...</em>
     </div>
-      <h6>Selectează o opțiune din meniu pentru a începe.</h6>
+      <p>Selectează o opțiune din meniu pentru a începe.</p>
       <div class="welcome-wrapper">
         <img src="img/3.png" alt="Welcome" class="welcome-img">
       </div>
@@ -268,6 +268,13 @@ header a:hover {
       let html = '';
 
       switch(type) {
+		  case 'Mesaje':
+			  {
+				  html=``;
+				  break;
+			  }
+
+			  
         case 'date':
           html = `
             <h4><i class="bi bi-person-circle me-2"></i>Date personale</h4>
@@ -581,6 +588,7 @@ document.getElementById('refreshLink').addEventListener('click', function(e) {
   </script>
 </body>
 </html>
+
 
 
 
