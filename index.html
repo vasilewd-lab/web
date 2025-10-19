@@ -184,7 +184,7 @@ header a:hover {
 <body>
   <header>
     <button class="menu-toggle" id="menuToggle"><i class="bi bi-list"></i></button>
-    <h3><a href="#">De luni încep să...</a></h3>
+    <h3><a href="#" id="refreshLink">De luni încep să...</a></h3>
   </header>
 
   <div class="main-content">
@@ -534,6 +534,15 @@ header a:hover {
         });
       }
     }
+
+
+//reimpros[atam pagina cind tastam de luni incep
+document.getElementById('refreshLink').addEventListener('click', function(e) {
+  e.preventDefault(); // prevenim comportamentul # (salt)
+  location.reload();  // reîmprospătăm pagina
+});
+
+
 
     document.getElementById('btnDate').addEventListener('click', () => showForm('date'));
     document.getElementById('btnMasurare').addEventListener('click', () => showForm('masurare'));
